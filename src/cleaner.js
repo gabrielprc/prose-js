@@ -48,8 +48,6 @@ function Cleaner() {
 
 		regex = '(?:\\b|\\W)(' + regex + ')(?:\\W|\\b)';
 
-		console.log(regex);
-
 		return string.replace(new RegExp(regex, 'ig'), '');
 	}
 }

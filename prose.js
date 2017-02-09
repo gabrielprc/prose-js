@@ -12,10 +12,20 @@ var prose = {
 	 */
 	
 	compileToPseudocode: function(parsable) {
+		print('Original text', parsable);
+
 		parsable = clean(parsable);
+		print('Clean text', parsable);
+
 		parsable = stem(parsable);
+		print('Stemmed text', parsable);
+
 		parsable = classify(parsable);
+		print('Classified text', parsable);
+
 		parsable = translate(parsable);
+		print('Translated text', parsable);
+		
 		return parsable;
 	}
 };
@@ -40,9 +50,15 @@ function translate(string) {
 	return string;
 }
 
+function print(title, string) {
+	console.log('\n' + title);
+	console.log('==========');
+	console.log(string);
+}
+
 fs.readFile('input.txt', 'utf8', function(err, data) {
   if (err) throw err;
-  console.log(prose.compileToPseudocode(data));
+  prose.compileToPseudocode(data);
 });
 
 module.exports = prose;
