@@ -46,7 +46,7 @@ function Cleaner() {
 			regex += unwantedWords[i];
 		}
 
-		regex = '(?:\\b|\\W)[' + regex + '](?:\\W|\\b)';
+		regex = '(?:\\b|\\W)(' + regex + ')(?:\\W|\\b)';
 
 		console.log(regex);
 
