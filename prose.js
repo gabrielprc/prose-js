@@ -1,4 +1,5 @@
 var Cleaner = require('./src/cleaner.js');
+var Stemmer = require('./src/stemmer.js');
 var fs = require('fs');
 /**
  * Natural language-to-pseudocode compiler.
@@ -36,8 +37,8 @@ function clean(string) {
 }
 
 function stem(string) {
-	//	TODO
-	return string;
+	var stemmer = new Stemmer();
+	return stemmer.stem(string);
 }
 
 function classify(string) {

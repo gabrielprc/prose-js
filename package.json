@@ -31,5 +31,9 @@
     "gulp-pegjs": "0.0.1",
     "istanbul": "^0.4.4",
     "jasmine-node": "^1.14.5"
+  },
+  "dependencies": {
+    "natural": "^0.4.0",
+    "salient": "^0.2.1"
   }
 }
