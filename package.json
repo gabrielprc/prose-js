@@ -33,6 +33,7 @@
     "jasmine-node": "^1.14.5"
   },
   "dependencies": {
+    "franc": "^2.0.0",
     "natural": "^0.4.0",
     "salient": "^0.2.1"
   }

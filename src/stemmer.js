@@ -5,10 +5,14 @@
 
 var natural = require('natural');
 var salient = require('salient');
+var path = require('path')
 
 function Stemmer() {
 	var tokenizer = new natural.WordPunctTokenizer();
-	var tagger = new salient.tagging.HmmTagger();
+	var tagger = new salient.tagging.HmmTagger({
+		model: '../../../bin/es.hmm.json'
+	});
+	var irrelevantTags = ['ADV', 'PRON'];
 
 	/**
 	 * Returns a string without whitespaces between non-word symbols
@@ -18,11 +22,18 @@ function Stemmer() {
 	 */
 	this.stem = function(string) {
 		var strings = split(string);
+
+		var tags = tagger.tag(strings);
+		console.log(join(tags));
+
 		var stemmedStrings = [];
 		for (var i = 0; i < strings.length; i++) {
-			stemmedStrings.push(stemWord(strings[i]));
+			if (isRelevant(tags[i])) {
+				// stemmedStrings.push(stemWord(strings[i]));
+				stemmedStrings.push(strings[i]);
+			}
 		}
-		console.log(tagger.tag(stemmedStrings));
+
 		return join(stemmedStrings);
 	}
 
@@ -60,6 +71,15 @@ function Stemmer() {
 		return stemAttempt;
 	}
 
+	/*
+	 * Returns whether the word tag is relevant or not.
+	 *
+	 * @private
+	 * @param {string} tag - Tag to check.
+	 */
+	function isRelevant(tag) {
+		return !irrelevantTags.contains(tag);
+	}
 
 }
 

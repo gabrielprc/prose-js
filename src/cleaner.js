@@ -2,11 +2,18 @@
  * String cleaner module.
  * @exports Cleaner
  */
-function Cleaner() {
-	var unwantedWords = [
-		'a', 'an', 'the',
-		'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'lo', 'al', 'del'
-	];
+function Cleaner(language) {
+	var unwantedWords = [];
+
+	if (language == 'spa') {
+		unwantedWords = [
+			'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'lo', 'al', 'del'
+		];
+	} else if (language == 'eng') {
+		unwantedWords = [
+			'a', 'an', 'the'
+		];
+	}
 	/**
 	 * Returns a string without whitespaces between non-word symbols
 	 * (characters not in the alphabet, such as parenthesis, brackets or commas).
@@ -48,7 +55,7 @@ function Cleaner() {
 
 		regex = '(?:\\b|\\W)(' + regex + ')(?:\\W|\\b)';
 
-		return string.replace(new RegExp(regex, 'ig'), '');
+		return string.replace(new RegExp(regex, 'ig'), ' ');
 	}
 }
 

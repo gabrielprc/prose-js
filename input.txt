@@ -1,0 +1,3 @@
+Inicialmente se tiene que x es 0.
+
+Luego, por cada valor en una lista de valores, si dicho valor es mayor a 2 y menor a 10, x es igual a x + 1. Sino, x es igual a x menos 1.
