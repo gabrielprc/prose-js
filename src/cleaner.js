@@ -2,7 +2,17 @@
  * String cleaner module.
  * @exports Cleaner
  */
+
+var salient = require('salient');
+var natural = require('natural');
+
 function Cleaner(language) {
+	var tagger = new salient.tagging.HmmTagger({
+		model: '../../../bin/es.hmm.json'
+	});
+	var tokenizer = new natural.RegexpTokenizer({pattern: /([\wáéíóú]+|\!|\'|\"")/i});
+
+	var irrelevantTags = ['ADV', 'PRON', 'DELETE'];
 	var unwantedWords = [];
 
 	if (language == 'spa') {
@@ -52,10 +62,100 @@ function Cleaner(language) {
 			}
 			regex += unwantedWords[i];
 		}
-
 		regex = '(?:\\b|\\W)(' + regex + ')(?:\\W|\\b)';
 
-		return string.replace(new RegExp(regex, 'ig'), ' ');
+		string = string.replace(new RegExp(regex, 'ig'), ' ');
+
+		var strings = split(string);
+		var tags = tagger.tag(strings);
+
+		console.log(join(tags));
+
+		translateWords(strings, tags);
+
+		strings = removeIrrelevantWords(strings, tags);
+
+		return join(strings);
+	}
+
+	/*
+	 * Translates relevant words to more useful synonims.
+	 *
+	 * @private
+	 * @param {array} strings - Words to translate.
+	 * @param {array} tags - Word tags.
+	 */
+	function translateWords(strings, tags) {
+		for (var i = 0; i < strings.length; i++) {
+			if (tags[i] == 'ADV') {
+				if (strings[i].toLowerCase() == 'más') {
+					strings[i] = '+';
+					tags[i] = 'KEEP';
+				} else if (strings[i].toLowerCase() == 'menos') {
+					strings[i] = '-';
+					tags[i] = 'KEEP';
+				} else if (strings[i].toLowerCase() == 'igual') {
+					if (strings.length >= (i + 1) && strings[i + 1].toLowerCase() == 'a') {
+						strings[i] = '=';
+						tags[i] = 'KEEP';
+						tags[i + 1] = 'DELETE';
+
+						if (i > 0 && strings[i - 1].toLowerCase() == 'es') {
+							tags[i - 1] = 'DELETE';							
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/*
+	 * Removes words tagged as irrelevant. Returns resulting array.
+	 *
+	 * @private
+	 * @param {array} strings - Words to check.
+	 * @param {array} tags - Word tags.
+	 */
+	function removeIrrelevantWords(strings, tags) {
+		var relevantStrings = [];
+
+		for (var i = 0; i < strings.length; i++) {
+			if (isRelevant(tags[i])) {
+				relevantStrings.push(strings[i]);
+			}
+		}
+
+		return relevantStrings;
+	}
+
+	/*
+	 * Returns whether the word tag is relevant or not.
+	 *
+	 * @private
+	 * @param {string} tag - Tag to check.
+	 */
+	function isRelevant(tag) {
+		return !irrelevantTags.contains(tag);
+	}
+
+	/*
+	 * Returns a tokenized (split) array of strings from the original string.
+	 *
+	 * @private
+	 * @param {string} string - String to split.
+	 */
+	function split(string) {
+		return tokenizer.tokenize(string);
+	}
+
+	/*
+	 * Returns a single string formed by the strings in the array.
+	 *
+	 * @private
+	 * @param {array} strings - Array to join.
+	 */
+	function join(strings) {
+		return strings.join(' ');
 	}
 }
 

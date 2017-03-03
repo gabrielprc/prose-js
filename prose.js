@@ -23,7 +23,7 @@ var prose = {
 		print('Clean text', parsable);
 
 		parsable = stem(parsable, lang);
-		print('Stemmed text', parsable);
+		print('Stemmed text', parsable);		
 
 		parsable = classify(parsable, lang);
 		print('Classified text', parsable);
