@@ -4,7 +4,7 @@
  */
 
 var natural = require('natural');
-var path = require('path')
+var path = require('path');
 
 function Stemmer() {
 

@@ -1,4 +1,5 @@
 var Cleaner = require('./src/cleaner.js');
+var Classifier = require('./src/classifier.js');
 var Stemmer = require('./src/stemmer.js');
 var LangDetector = require('./src/language-detector.js');
 var fs = require('fs');
@@ -19,14 +20,14 @@ var prose = {
 		var lang = detectLanguage(parsable);
 		print('Language detected', lang);
 
+		parsable = classify(parsable, lang);
+		print('Classified text', parsable);
+
 		parsable = clean(parsable, lang);
 		print('Clean text', parsable);
 
 		parsable = stem(parsable, lang);
 		print('Stemmed text', parsable);		
-
-		parsable = classify(parsable, lang);
-		print('Classified text', parsable);
 
 		parsable = translate(parsable);
 		print('Translated text', parsable);

@@ -68,7 +68,6 @@ function Cleaner(language) {
 
 		var strings = split(string);
 		var tags = tagger.tag(strings);
-
 		console.log(join(tags));
 
 		translateWords(strings, tags);
