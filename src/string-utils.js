@@ -11,6 +11,7 @@ function StringUtils() {
 		model: '../../../bin/es.hmm.json'
 	});
 	var tokenizer = new natural.RegexpTokenizer({pattern: /([\wáéíóú]+|\!|\'|\"")/i});
+	var classifier = new natural.BayesClassifier();
 
 	/*
 	 * Returns Part-of-Speech tagger.
@@ -24,6 +25,13 @@ function StringUtils() {
 	 */
 	this.getWordTokenizer = function() {
 		return tokenizer;
+	}
+
+	/*
+	 * Returns classifier.
+	 */
+	this.getClassifier = function() {
+		return classifier;
 	}
 
 	/*

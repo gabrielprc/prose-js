@@ -3,14 +3,11 @@
  * @exports Cleaner
  */
 
-var salient = require('salient');
-var natural = require('natural');
+var StringUtils = require('./string-utils');
 
 function Cleaner(language) {
-	var tagger = new salient.tagging.HmmTagger({
-		model: '../../../bin/es.hmm.json'
-	});
-	var tokenizer = new natural.RegexpTokenizer({pattern: /([\wáéíóú]+|\!|\'|\"")/i});
+	var stringUtils = new StringUtils();
+	var tagger = stringUtils.getTagger();
 
 	var irrelevantTags = ['ADV', 'PRON', 'DELETE'];
 	var unwantedWords = [];
@@ -66,15 +63,14 @@ function Cleaner(language) {
 
 		string = string.replace(new RegExp(regex, 'ig'), ' ');
 
-		var strings = split(string);
+		var strings = stringUtils.split(string);
 		var tags = tagger.tag(strings);
-		console.log(join(tags));
 
 		translateWords(strings, tags);
 
 		strings = removeIrrelevantWords(strings, tags);
 
-		return join(strings);
+		return stringUtils.join(strings);
 	}
 
 	/*
@@ -137,25 +133,6 @@ function Cleaner(language) {
 		return !irrelevantTags.contains(tag);
 	}
 
-	/*
-	 * Returns a tokenized (split) array of strings from the original string.
-	 *
-	 * @private
-	 * @param {string} string - String to split.
-	 */
-	function split(string) {
-		return tokenizer.tokenize(string);
-	}
-
-	/*
-	 * Returns a single string formed by the strings in the array.
-	 *
-	 * @private
-	 * @param {array} strings - Array to join.
-	 */
-	function join(strings) {
-		return strings.join(' ');
-	}
 }
 
 module.exports = Cleaner;

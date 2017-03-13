@@ -6,12 +6,22 @@
 var StringUtils = require('./string-utils');
 
 function Classifier() {
+	var _self = this;
 	var wordDistanceTolerance = 3;
-	var minimumClassificationValue = 0.9;
+	var minimumClassificationValue = 0.3;
 
 	var documents = [
 		{
-			docs: ['es mayor a', 'es mayor que'],
+			docs: [
+				'si qqq es mayor a qqq',
+				'si qqq es mayor que qqq',
+				'se tiene que x es mayor a x',
+				'se tiene que x es mayor que x',
+				'se sabe que x es mayor a x',
+				'se sabe que x es mayor que x',
+				'es mayor a',
+				'es mayor que'
+			],
 			meaning: '>'
 		},
 		{
@@ -31,14 +41,16 @@ function Classifier() {
 			meaning: '=='
 		}
 	];
-	var classifier = new natural.BayesClassifier();
 	var stringUtils = new StringUtils();
+	var classifier = stringUtils.getClassifier();
 	var tagger = stringUtils.getTagger();
-	var tokenizer = stringUtils.getWordTokenizer();
 
 	for (var i = 0; i < documents.length; i++) {
-		classifier.addDocument(documents[i].docs, documents[i].meaning);
+		for (var j = 0; j < documents[i].docs.length; j++) {
+			classifier.addDocument(documents[i].docs[j], documents[i].meaning);
+		}
 	}
+	classifier.train();
 
 	/*
 	 * Returns the text with matching expressions replaced
@@ -49,28 +61,35 @@ function Classifier() {
 	 */
 	this.classify = function(text) {
 		for (var i = 0; i < documents.length; i++) {
-			var strings = tokenizer.tokenize(text);
-			var tags = tagger.tag(strings);
-			text = classifyExpression
+			var strings = stringUtils.split(text);
+			var tags = tag(strings);
+			for (var j = 0; j < documents[i].docs.length; j++) {
+				text = classifyExpression(strings, tags, documents[i].docs[j]);
+			}
 		}
-		return text;
+		return text.replace(/\ +/g, ' ');
 	}
 
 	function classifyExpression(strings, tags, expression) {
-		var expressionTags = tagger.tag(expression);
+		var expressionTags = tag(stringUtils.split(expression));
+
 		if (expressionTags.length <= tags.length) {
 			for (var i = 0; i < tags.length - expressionTags.length; i++) {
-				for (var j = i; j < expressionTags.length + wordDistanceTolerance; j++) {
-					if (tags[i] == expressionTags[0] && tags[j] == expressionTags[expressionTags.length - 1]) {
-						var matchingExpression = stringUtils.join(strings.slice(i, j));
+				if (tags[i] == expressionTags[0]) {
+					for (var j = expressionTags.length - 1; j < expressionTags.length + wordDistanceTolerance; j++) {
+						if (tags[i + j] == expressionTags[expressionTags.length - 1]) {
+							var matchingExpression = stringUtils.join(strings.slice(i, i + j + 1));
 
-						var classifications = classifier.classify(matchingExpression);
-						if (classifications.length > 0 && classifications[0].value >= minimumClassificationValue) {
-							var text = 
-								stringUtils.join(strings.slice(0, i)
-								+ classifications[0].label
-								+ strings.slice(j, strings.length - 1));
-							return classify(text);
+							var classifications = classifier.getClassifications(matchingExpression);
+							if (classifications.length > 0 && classifications[0].value >= minimumClassificationValue) {
+								var text = 
+									stringUtils.join(
+										strings.slice(0, i)
+										.concat(classifications[0].label)
+										.concat(strings.slice(i + j + 1, strings.length))
+									);
+								return _self.classify(text);
+							}
 						}
 					}
 				}
@@ -79,7 +98,15 @@ function Classifier() {
 		return stringUtils.join(strings);
 	}
 
-
+	function tag(text) {
+		var tags = tagger.tag(text);
+		for (var i = 0; i < tags.length; i++) {
+			if (tags[i] == 'NUM') {
+				tags[i] = 'NOUN';
+			}
+		}
+		return tags;
+	}
 
 }
 

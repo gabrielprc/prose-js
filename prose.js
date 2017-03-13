@@ -1,7 +1,7 @@
-var Cleaner = require('./src/cleaner.js');
-var Classifier = require('./src/classifier.js');
-var Stemmer = require('./src/stemmer.js');
-var LangDetector = require('./src/language-detector.js');
+var Cleaner = require('./src/cleaner');
+var Classifier = require('./src/classifier');
+var Stemmer = require('./src/stemmer');
+var LangDetector = require('./src/language-detector');
 var fs = require('fs');
 /**
  * Natural language-to-pseudocode compiler.
@@ -20,7 +20,7 @@ var prose = {
 		var lang = detectLanguage(parsable);
 		print('Language detected', lang);
 
-		parsable = classify(parsable, lang);
+		parsable = classify(parsable);
 		print('Classified text', parsable);
 
 		parsable = clean(parsable, lang);
@@ -51,9 +51,9 @@ function stem(string, lang) {
 	return stemmer.stem(string);
 }
 
-function classify(string, lang) {
-	//	TODO
-	return string;
+function classify(string) {
+	var classifier =  new Classifier();
+	return classifier.classify(string);
 }
 
 function translate(string) {
