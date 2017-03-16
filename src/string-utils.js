@@ -40,7 +40,11 @@ function StringUtils() {
 	 * @param {string} string - String to split.
 	 */
 	this.split = function(string) {
-		return tokenizer.tokenize(string);
+		var strings = tokenizer.tokenize(string);
+		for (var i = 0; i < strings.length; i++) {
+			strings[i] = strings[i].trim();
+		}
+		return strings;
 	}
 
 	/*

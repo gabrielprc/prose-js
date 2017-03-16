@@ -77,7 +77,10 @@ function Classifier() {
 			for (var i = 0; i < tags.length - expressionTags.length; i++) {
 				if (tags[i] == expressionTags[0]) {
 					for (var j = expressionTags.length - 1; j < expressionTags.length + wordDistanceTolerance; j++) {
-						if (tags[i + j] == expressionTags[expressionTags.length - 1]) {
+						if (tags[i + j] == '.') {
+							i += j;
+							break;
+						} else if (tags[i + j] == expressionTags[expressionTags.length - 1]) {
 							var matchingExpression = stringUtils.join(strings.slice(i, i + j + 1));
 
 							var classifications = classifier.getClassifications(matchingExpression);
