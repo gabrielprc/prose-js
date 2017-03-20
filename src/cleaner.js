@@ -10,6 +10,7 @@ function Cleaner(language) {
 	var tagger = stringUtils.getTagger();
 
 	var irrelevantTags = ['ADV', 'PRON', 'DELETE'];
+	var unwantedStructures = [['VERB', 'CONJ'], ['CONJ', 'VERB']];
 	var unwantedWords = [];
 
 	if (language == 'spa') {
@@ -28,8 +29,9 @@ function Cleaner(language) {
 	 * @param {string} string - String to clean.
 	 */
 	this.clean = function(string) {
-		string = removePunctuation(string);
+		string = removeStructures(string);
 		string = removeWords(string);
+		string = removePunctuation(string);
 		return string;
 	}
 
@@ -41,8 +43,49 @@ function Cleaner(language) {
 	 */
 	function removePunctuation(string) {
 		return string
-			.replace(/[,|;|:|\!|¡|\?|¿|]/g, '')				//	Remove these characters
-			.replace(/ +/g, ' ').replace(/\n+/g, '\n');		//	Replace multiple spaces for one
+			.replace(/\s+(\W)/g, '$1').replace(/\n+/g, '\n')
+			.replace(/ +/g, ' ').replace(/\n+/g, '\n')		//	Replace multiple spaces with one
+			.replace(/[;|:|\!|¡|\?|¿|]/g, '')				//	Remove these punctuation characters
+			.replace(/{\s*,\s*}+/g, ',')					//	Remove multiple commas
+			.replace(/(\.\s*,|,\s*\.)/g, '.')				//	Remove ill-located commas
+			.replace(/\.+/g, '.');							//	Remove multiple periods
+	}
+
+	/*
+	 * Returns the string without unwanted word structures.
+	 *
+	 * @private
+	 * @param {string} string - String to clean.
+	 */
+	function removeStructures(string) {
+		if (typeof string == 'string') {
+			var strings = stringUtils.split(string);
+		} else {
+			var strings = string;
+		}
+		var tags = tagger.tag(strings);
+
+		for (var i = 0; i < tags.length; i++) {
+			for (var j = 0; j < unwantedStructures.length; j++) {
+				if (tags[i] == unwantedStructures[j][0] && i + j <= tags.length) {
+					var isUnwantedStructure = true;
+
+					for (var k = 1; k < unwantedStructures[j].length; k++) {
+						if (tags[i + k] !== unwantedStructures[j][k]) {
+							isUnwantedStructure = false;
+							break;
+						}
+					}
+
+					if (isUnwantedStructure) {
+						strings.splice(i, unwantedStructures[j].length);
+						return removeStructures(strings);
+					}
+				}
+			}
+		}
+
+		return stringUtils.join(strings);
 	}
 
 	/*
