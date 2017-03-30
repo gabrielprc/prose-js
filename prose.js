@@ -1,6 +1,7 @@
 var Cleaner = require('./src/cleaner');
 var Classifier = require('./src/classifier');
 var Stemmer = require('./src/stemmer');
+var Translator = require('./src/translator')
 var LangDetector = require('./src/language-detector');
 var fs = require('fs');
 /**
@@ -52,13 +53,13 @@ function stem(string, lang) {
 }
 
 function classify(string) {
-	var classifier =  new Classifier();
+	var classifier = new Classifier();
 	return classifier.classify(string);
 }
 
 function translate(string) {
-	//	TODO
-	return string;
+	var translator = new Translator();
+	return translator.translate(string);
 }
 
 function print(title, string) {
