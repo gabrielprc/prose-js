@@ -18,7 +18,8 @@ var prose = {
 	compileToPseudocode: function(parsable) {
 		print('Original text', parsable);
 
-		var lang = detectLanguage(parsable);
+		// var lang = detectLanguage(parsable);
+		var lang = 'spa';
 		print('Language detected', lang);
 
 		parsable = classify(parsable);

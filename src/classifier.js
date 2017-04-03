@@ -8,7 +8,7 @@ var StringUtils = require('./string-utils');
 function Classifier() {
 	var _self = this;
 	var wordDistanceTolerance = 3;
-	var minimumClassificationValue = 0.3;
+	var minimumClassificationValue = 0.5;
 
 	var documents = [
 		{
@@ -25,19 +25,46 @@ function Classifier() {
 			meaning: '>'
 		},
 		{
-			docs: ['es mayor o igual a', 'es mayor o igual que'],
+			docs: [
+				'es mayor o igual a',
+				'es mayor o igual que',
+				'se tiene que x es mayor o igual a x',
+				'se tiene que x es mayor o igual que x',
+				'se sabe que x es mayor o igual a x',
+				'se sabe que x es mayor o igual que x'
+			],
 			meaning: '>='
 		},
 		{
-			docs: ['es menor a', 'es menor que'],
+			docs: [
+				'si qqq es menor a qqq',
+				'si qqq es menor que qqq',
+				'se tiene que x es menor a x',
+				'se tiene que x es menor que x',
+				'se sabe que x es menor a x',
+				'se sabe que x es menor que x',
+				'es menor a',
+				'es menor que'
+			],
 			meaning: '<'
 		},
 		{
-			docs: ['es menor o igual a', 'es menor o igual que'],
+			docs: [
+				'es menor o igual a',
+				'es menor o igual que',
+				'se tiene que x es menor o igual a x',
+				'se tiene que x es menor o igual que x',
+				'se sabe que x es menor o igual a x',
+				'se sabe que x es menor o igual que x'
+			],
 			meaning: '<='
 		},
 		{
-			docs: ['es igual a', 'es igual que', 'equivale a'],
+			docs: [
+				'es igual a',
+				'es igual que',
+				'equivale a'
+			],
 			meaning: '=='
 		}
 	];
@@ -83,15 +110,17 @@ function Classifier() {
 						} else if (tags[i + j] == expressionTags[expressionTags.length - 1]) {
 							var matchingExpression = stringUtils.join(strings.slice(i, i + j + 1));
 
-							var classifications = classifier.getClassifications(matchingExpression);
-							if (classifications.length > 0 && classifications[0].value >= minimumClassificationValue) {
-								var text = 
-									stringUtils.join(
-										strings.slice(0, i)
-										.concat(classifications[0].label)
-										.concat(strings.slice(i + j + 1, strings.length))
-									);
-								return _self.classify(text);
+							if (!(containsPunctuation(matchingExpression) && !containsPunctuation(expression))) {
+								var classifications = classifier.getClassifications(matchingExpression);
+								if (classifications.length > 0 && classifications[0].value >= minimumClassificationValue) {
+									var text = 
+										stringUtils.join(
+											strings.slice(0, i)
+											.concat(classifications[0].label)
+											.concat(strings.slice(i + j + 1, strings.length))
+										);
+									return _self.classify(text);
+								}
 							}
 						}
 					}
@@ -109,6 +138,10 @@ function Classifier() {
 			}
 		}
 		return tags;
+	}
+
+	function containsPunctuation(string) {
+		return string.indexOf('.') > -1;
 	}
 
 }
