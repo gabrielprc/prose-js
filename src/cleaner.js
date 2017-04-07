@@ -45,7 +45,7 @@ function Cleaner(language) {
 		return string
 			.replace(/\s+(\W)/g, '$1').replace(/\n+/g, '\n')
 			.replace(/ +/g, ' ').replace(/\n+/g, '\n')		//	Replace multiple spaces with one
-			.replace(/[;|:|\!|¡|\?|¿|]/g, '')				//	Remove these punctuation characters
+			.replace(/[\!|¡|\?|¿|]/g, '')				//	Remove these punctuation characters
 			.replace(/{\s*,\s*}+/g, ',')					//	Remove multiple commas
 			.replace(/(\.\s*,|,\s*\.)/g, '.')				//	Remove ill-located commas
 			.replace(/\.+/g, '.');							//	Remove multiple periods

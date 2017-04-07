@@ -10,7 +10,7 @@ function Translator() {
 		code: '\n'
 	};
 	var BLOCK = {
-		text: [/,\s*([^,\.]+)\s*(?=[,\.])/g],
+		text: [/:\s*(?!(?:\n|$))(.+)\s*\s*(?=(?:\n|$))/g, /,\s*([^,\.]+)\s*(?=[,\.])/g],
 		code: '{\n\t$1\n}'
 	};
 
@@ -27,7 +27,9 @@ function Translator() {
 
 	function replace(string, replaceParams) {
 		for (var i = 0; i < replaceParams.text.length; i++) {
-			string = string.replace(replaceParams.text[i], replaceParams.code);
+			while (replaceParams.text[i].test(string)) {
+				string = string.replace(replaceParams.text[i], replaceParams.code);
+			}
 		}
 		return string;
 	}
