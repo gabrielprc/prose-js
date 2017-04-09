@@ -1,8 +1,9 @@
 var Cleaner = require('./src/cleaner');
 var Classifier = require('./src/classifier');
 var Stemmer = require('./src/stemmer');
-var Translator = require('./src/translator')
+var Translator = require('./src/translator');
 var LangDetector = require('./src/language-detector');
+var Formatter = require('./src/formatter');
 var fs = require('fs');
 /**
  * Natural language-to-pseudocode compiler.
@@ -16,25 +17,39 @@ var prose = {
 	 */
 	
 	compileToPseudocode: function(parsable) {
-		print('Original text', parsable);
+		var parsed = [];
+		var parsables = parsable.split(/\n+-+\n+/);
 
-		// var lang = detectLanguage(parsable);
-		var lang = 'spa';
-		print('Language detected', lang);
+		for (var i = 0; i < parsables.length; i++) {
+			var p = parsables[i].trim();
 
-		parsable = classify(parsable);
-		print('Classified text', parsable);
+			print('Parsing piece #' + (i + 1));
 
-		parsable = clean(parsable, lang);
-		print('Clean text', parsable);
+			print('Original text', p);
 
-		parsable = stem(parsable, lang);
-		print('Stemmed text', parsable);		
+			// var lang = detectLanguage(parsable);
+			var lang = 'spa';
+			print('Language detected', lang);
 
-		parsable = translate(parsable);
-		print('Translated text', parsable);
+			p = classify(p);
+			print('Classified text', p);
+
+			p = clean(p, lang);
+			print('Clean text', p);
+
+			p = stem(p, lang);
+			print('Stemmed text', p);		
+
+			p = translate(p);
+			print('Translated text', p);
+
+			p = format(p);
+			print('Formatted text', p);
+
+			parsed.push(p);
+		}
 		
-		return parsable;
+		return parsed.length === 1 ? parsed[0] : parsed;
 	}
 };
 
@@ -63,10 +78,17 @@ function translate(string) {
 	return translator.translate(string);
 }
 
+function format(string) {
+	var formatter = new Formatter();
+	return formatter.format(string);
+}
+
 function print(title, string) {
 	console.log('\n' + title);
 	console.log('==========');
-	console.log(string);
+	if (string) {
+		console.log(string);
+	}
 }
 
 fs.readFile('input.txt', 'utf8', function(err, data) {

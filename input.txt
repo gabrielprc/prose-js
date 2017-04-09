@@ -1,9 +1,9 @@
 Inicialmente se tiene que x es 0.
 
-Luego, por cada valor en una lista de valores, si valor es mayor que 2 y menor a beta, x es igual a x + 1. Sino, x es igual a beta más 1.
+Luego, por cada valor en una lista de valores: si valor es mayor que 2 y menor a beta, x es igual a x + 1. Sino, x es igual a beta más 1.
 
 --------
 
 La variable números es una lista.
 
-Mientras cambiados sea verdadero: Cambiados es falso e i es 0. Mientras i sea menor al largo de números, si números[i] es mayor a números[i + 1], entonces una variable temporal es números[i], números[i] es números[i + 1] y números[i + 1] es temporal, y cambiado es verdadero. Además, i es i + 1.
+Mientras cambiados sea verdadero: Cambiados es falso e i es 0. Mientras i sea menor al largo de números: si números[i] es mayor a números[i + 1], entonces una variable temporal es números[i], números[i] es números[i + 1] y números[i + 1] es temporal, y cambiado es verdadero. Además, i es i + 1.
