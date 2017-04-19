@@ -1,6 +1,6 @@
 Inicialmente se tiene que x es 0.
 
-Luego, por cada valor en una lista de valores: si valor es mayor que 2 y menor a beta, x es igual a x + 1. Sino, x es igual a beta más 1.
+Luego, por cada valor en una lista de valores: si valor es mayor que 2 y menor a beta, x es igual a x + 1. x es igual a caca. Sino, x es igual a beta más 1.
 
 --------
 

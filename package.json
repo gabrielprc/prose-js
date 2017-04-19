@@ -35,7 +35,7 @@
   "dependencies": {
     "franc": "^2.0.0",
     "js-beautify": "^1.6.12",
-    "natural": "^0.4.0",
+    "natural": "^0.5.1",
     "salient": "^0.2.1"
   }
 }
