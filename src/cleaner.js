@@ -15,7 +15,7 @@ function Cleaner(language) {
 
 	if (language == 'spa') {
 		unwantedWords = [
-			'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'lo', 'al', 'del'
+			'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'lo', 'del'
 		];
 	} else if (language == 'eng') {
 		unwantedWords = [

@@ -3,16 +3,21 @@
  * @exports Translator
  */
 
+var StringUtils = require('./string-utils');
+
 
 function Translator() {
+	var STATEMENT_SEPARATOR = '\n';
+	var TAB = '\t';
 	var END_OF_STATEMENT = {
 		text: [/\s*\.+\s*/g],
-		code: '\n'
+		code: STATEMENT_SEPARATOR
 	};
 	var BLOCK = {
 		text: [/:\s*(?!(?:\n|$))(.+)\s*\s*(?=(?:\n|$))/g, /,\s*([^,\.]+)\s*(?=[,\.])/g],
-		code: '{\n\t$1\n}'
+		code: '{' + STATEMENT_SEPARATOR + TAB + '$1' + STATEMENT_SEPARATOR +'}'
 	};
+	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/;
 
 	/*
 	 * Returns the text translated to pseudocode.
@@ -22,6 +27,7 @@ function Translator() {
 	this.translate = function(text) {
 		text = replace(text, BLOCK);
 		text = replace(text, END_OF_STATEMENT);
+		text = translateStatements(text);
 		return text;
 	}
 
@@ -32,6 +38,34 @@ function Translator() {
 			}
 		}
 		return string;
+	}
+
+	function translateStatements(block) {
+		var translated = '';
+		var statements = block.split(STATEMENT_SEPARATOR);
+
+		for (var i = 0; i < statements.length; i++) {
+			if (i > 0) {
+				translated += STATEMENT_SEPARATOR;	
+			}
+			translated += translateStatement(statements[i]);
+		}
+
+		return translated;
+	}
+
+	function translateStatement(statement) {
+		var stringUtils	= new StringUtils();
+
+		if (FOR_EACH_PATTERN.test(statement)) {
+			var matches = FOR_EACH_PATTERN.exec(statement);
+
+			statement = statement
+				.replace(new RegExp(matches[1], 'g'), stringUtils.toCamelCase(matches[1]))
+				.replace(new RegExp(matches[2], 'g'), stringUtils.toCamelCase(matches[2]));
+		}
+
+		return statement;
 	}
 
 }
