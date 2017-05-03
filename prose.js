@@ -19,29 +19,41 @@ var prose = {
 	compileToPseudocode: function(parsable) {
 		var parsed = [];
 		var parsables = parsable.split(/\n+-+\n+/);
+		var printSteps = process.env.NODE_ENV === 'development';
 
 		for (var i = 0; i < parsables.length; i++) {
 			var p = parsables[i].trim();
 
-			print('Parsing piece #' + (i + 1));
-
-			print('Original text', p);
+			if (printSteps) {
+				print('Parsing piece #' + (i + 1));
+				print('Original text', p);
+			}
 
 			// var lang = detectLanguage(parsable);
 			var lang = 'spa';
-			print('Language detected', lang);
+			if (printSteps) {
+				print('Language detected', lang);
+			}
 
 			p = classify(p);
-			print('Classified text', p);
+			if (printSteps) {
+				print('Classified text', p);
+			}
 
 			p = clean(p, lang);
-			print('Clean text', p);
+			if (printSteps) {
+				print('Clean text', p);
+			}
 
 			p = stem(p, lang);
-			print('Stemmed text', p);		
+			if (printSteps) {
+				print('Stemmed text', p);
+			}
 
 			p = translate(p);
-			print('Translated text', p);
+			if (printSteps) {
+				print('Translated text', p);
+			}
 
 			p = format(p);
 			print('Formatted text', p);

@@ -1,9 +1,10 @@
 {
   "name": "prose-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Natural language-to-pseudocode compiler.",
   "main": "prose.js",
   "scripts": {
+    "start": "NODE_ENV=development node prose.js",
     "test": "jasmine-node test"
   },
   "repository": {

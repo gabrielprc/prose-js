@@ -8,13 +8,20 @@ var StringUtils = require('./string-utils');
 function Classifier() {
 	var _self = this;
 	var wordDistanceTolerance = 3;
-	var minimumClassificationValue = 0.5;
+	var minimumClassificationValue = 0.41;	//	42 is indeed the answer for everything.
 
 	var documents = [
 		{
 			docs: [
+				'si q es mayor a q',
+				'si qq es mayor a qq',
 				'si qqq es mayor a qqq',
+				'si qqqq es mayor a qqqq',
+				'si qqqqq es mayor a qqqqq',
+				'si q es mayor que q',
+				'si qq es mayor que qq',
 				'si qqq es mayor que qqq',
+				'si qqqq es mayor que qqqq',
 				'se tiene que x es mayor a x',
 				'se tiene que x es mayor que x',
 				'se sabe que x es mayor a x',
