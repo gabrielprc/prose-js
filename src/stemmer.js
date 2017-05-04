@@ -3,7 +3,7 @@
  * @exports Stemmer
  */
 
-var natural = require('natural');
+var PorterStemmerEs = require('natural/lib/natural/stemmers/porter_stemmer_es');
 
 function Stemmer() {
 
@@ -13,7 +13,7 @@ function Stemmer() {
 	 * @param {string} string - String to stem.
 	 */
 	this.stem = function(string) {
-		return natural.PorterStemmerEs.stem(string);
+		return PorterStemmerEs.stem(string);
 	}
 
 }

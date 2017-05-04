@@ -2,16 +2,16 @@
  * String utils module.
  * @exports StringUtils
  */
-
-var natural = require('natural');
+var RegexpTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').RegexpTokenizer;
+var BayesClassifier = require('natural/lib/natural/classifiers/bayes_classifier');
 var salient = require('salient');
 
 function StringUtils() {
 	var tagger = new salient.tagging.HmmTagger({
 		model: '../../../bin/es.hmm.json'
 	});
-	var tokenizer = new natural.RegexpTokenizer({pattern: /([\wáéíóú]+|\!|\'|\"")/i});
-	var classifier = new natural.BayesClassifier();
+	var tokenizer = new RegexpTokenizer({pattern: /([\wáéíóú]+|\!|\'|\"")/i});
+	var classifier = new BayesClassifier();
 
 	/*
 	 * Returns Part-of-Speech tagger.
