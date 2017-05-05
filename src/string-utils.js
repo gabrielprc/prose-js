@@ -4,10 +4,10 @@
  */
 var RegexpTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').RegexpTokenizer;
 var BayesClassifier = require('natural/lib/natural/classifiers/bayes_classifier');
-var salient = require('salient');
+var HmmTagger = require('salient/lib/salient/tagging/hmm_tagger');
 
 function StringUtils() {
-	var tagger = new salient.tagging.HmmTagger({
+	var tagger = new HmmTagger({
 		model: '../../../bin/es.hmm.json'
 	});
 	var tokenizer = new RegexpTokenizer({pattern: /([\wáéíóú]+|\!|\'|\"")/i});
