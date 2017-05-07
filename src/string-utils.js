@@ -3,7 +3,7 @@
  * @exports StringUtils
  */
 var RegexpTokenizer = require('natural/lib/natural/tokenizers/regexp_tokenizer').RegexpTokenizer;
-var BayesClassifier = require('natural/lib/natural/classifiers/bayes_classifier');
+var BayesClassifier = require('bayes-classifier');
 var HmmTagger = require('salient/lib/salient/tagging/hmm_tagger');
 
 function StringUtils() {

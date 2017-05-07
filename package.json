@@ -1,6 +1,6 @@
 {
   "name": "prose-js",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Natural language-to-pseudocode compiler.",
   "main": "prose.js",
   "scripts": {
@@ -34,6 +34,7 @@
     "jasmine-node": "^1.14.5"
   },
   "dependencies": {
+    "bayes-classifier": "0.0.3",
     "franc": "^2.0.0",
     "js-beautify": "^1.6.12",
     "natural": "^0.5.1",
