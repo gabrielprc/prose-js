@@ -4,7 +4,7 @@ var Stemmer = require('./src/stemmer');
 var Translator = require('./src/translator');
 var LangDetector = require('./src/language-detector');
 var Formatter = require('./src/formatter');
-var printSteps = true;
+var printSteps = process && process.env.NODE_ENV === 'development';		
 /**
  * Natural language-to-pseudocode compiler.
  * @exports prose-js
