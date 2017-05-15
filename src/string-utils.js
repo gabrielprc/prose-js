@@ -10,7 +10,7 @@ function StringUtils() {
 	var tagger = new HmmTagger({
 		model: '../../../bin/es.hmm.json'
 	});
-	var tokenizer = new RegexpTokenizer({pattern: /([\wáéíóú]+|\!|\'|\"")/i});
+	var tokenizer = new RegexpTokenizer({pattern: /((?:["'])[^"']*(?:["'])|[^"'\s]+)/ig});
 	var classifier = new BayesClassifier();
 
 	/*

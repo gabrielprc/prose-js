@@ -15,7 +15,10 @@ function Cleaner(language) {
 
 	if (language == 'spa') {
 		unwantedWords = [
-			'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'lo', 'del', 'variable', 'variables'
+			'el', 'la', 'los', 'las',
+			'un', 'una', 'unos', 'unas',
+			'lo', 'del', 'variable', 'variables',
+			'mi', 'su', 'sus'
 		];
 	} else if (language == 'eng') {
 		unwantedWords = [
@@ -43,7 +46,7 @@ function Cleaner(language) {
 	 */
 	function removePunctuation(string) {
 		return string
-			.replace(/\s+(\W)/g, '$1').replace(/\n+/g, '\n')
+			.replace(/\s+([.,;:¡!¿?])/g, '$1').replace(/\n+/g, '\n')
 			.replace(/ +/g, ' ').replace(/\n+/g, '\n')		//	Replace multiple spaces with one
 			.replace(/[\!|¡|\?|¿|]/g, '')				//	Remove these punctuation characters
 			.replace(/{\s*,\s*}+/g, ',')					//	Remove multiple commas

@@ -97,6 +97,10 @@ function Classifier() {
 		for (var i = 0; i < documents.length; i++) {
 			var strings = stringUtils.split(text);
 			var tags = tag(strings);
+
+			console.log(strings);
+			console.log(tags);
+
 			for (var j = 0; j < documents[i].docs.length; j++) {
 				text = classifyExpression(strings, tags, documents[i].docs[j]);
 			}
