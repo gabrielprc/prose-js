@@ -1,10 +1,11 @@
-var Cleaner = require('./src/cleaner');
-var Classifier = require('./src/classifier');
-var Stemmer = require('./src/stemmer');
-var Translator = require('./src/translator');
-var LangDetector = require('./src/language-detector');
-var Formatter = require('./src/formatter');
-var printSteps = process && process.env.NODE_ENV === 'development';		
+var Cleaner = require("./src/cleaner");
+var Classifier = require("./src/classifier");
+var Stemmer = require("./src/stemmer");
+var Translator = require("./src/translator");
+var LangDetector = require("./src/language-detector");
+var Formatter = require("./src/formatter");
+var printSteps = true;
+// var printSteps = process && process.env.NODE_ENV === "development";
 /**
  * Natural language-to-pseudocode compiler.
  * @exports prose-js
@@ -15,7 +16,7 @@ var prose = {
 	 *
 	 * @param {string} string - Text to parse.
 	 */
-	
+
 	compileToPseudocode: function(parsable) {
 		var parsed = [];
 		var parsables = parsable.split(/\n+-+\n+/);
@@ -24,42 +25,42 @@ var prose = {
 			var p = parsables[i].trim();
 
 			if (printSteps) {
-				print('Parsing piece #' + (i + 1));
-				print('Original text', p);
+				print("Parsing piece #" + (i + 1));
+				print("Original text", p);
 			}
 
 			// var lang = detectLanguage(parsable);
-			var lang = 'spa';
+			var lang = "spa";
 			if (printSteps) {
-				print('Language detected', lang);
+				print("Language detected", lang);
 			}
 
 			p = classify(p);
 			if (printSteps) {
-				print('Classified text', p);
+				print("Classified text", p);
 			}
 
 			p = clean(p, lang);
 			if (printSteps) {
-				print('Clean text', p);
+				print("Clean text", p);
 			}
 
 			p = stem(p, lang);
 			if (printSteps) {
-				print('Stemmed text', p);
+				print("Stemmed text", p);
 			}
 
 			p = translate(p);
 			if (printSteps) {
-				print('Translated text', p);
+				print("Translated text", p);
 			}
 
 			p = format(p);
-			print('Formatted text', p);
+			print("Formatted text", p);
 
 			parsed.push(p);
 		}
-		
+
 		return parsed.length === 1 ? parsed[0] : parsed;
 	}
 };
@@ -95,18 +96,18 @@ function format(string) {
 }
 
 function print(title, string) {
-	console.log('\n' + title);
-	console.log('==========');
+	console.log("\n" + title);
+	console.log("==========");
 	if (string) {
 		console.log(string);
 	}
 }
 
 if (printSteps) {
-	var fs = require('fs');
-	fs.readFile('input.txt', 'utf8', function(err, data) {
-	  if (err) throw err;
-	  prose.compileToPseudocode(data);
+	var fs = require("fs");
+	fs.readFile("input.txt", "utf8", function(err, data) {
+		if (err) throw err;
+		prose.compileToPseudocode(data);
 	});
 }
 

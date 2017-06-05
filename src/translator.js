@@ -17,6 +17,10 @@ function Translator() {
 		text: [/:\s*(?!(?:\n|$))(.+)\s*\s*(?=(?:\n|$))/g, /,\s*([^,\.]+)\s*(?=[,\.])/g],
 		code: '{' + STATEMENT_SEPARATOR + TAB + '$1' + STATEMENT_SEPARATOR +'}'
 	};
+	var JOINED_BLOCKS = {
+		text: [/\s*}\s*{\s*/g],
+		code: STATEMENT_SEPARATOR
+	};
 	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/;
 
 	/*
@@ -26,6 +30,7 @@ function Translator() {
 	 */
 	this.translate = function(text) {
 		text = replace(text, BLOCK);
+		text = replace(text, JOINED_BLOCKS);
 		text = replace(text, END_OF_STATEMENT);
 		text = translateStatements(text);
 		return text;

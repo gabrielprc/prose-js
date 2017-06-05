@@ -7,10 +7,18 @@ var StringUtils = require('./string-utils');
 
 function Classifier() {
 	var _self = this;
-	var wordDistanceTolerance = 3;
+	var wordDistanceTolerance = 2;
 	var minimumClassificationValue = 0.41;	//	42 is indeed the answer for everything.
 
 	var documents = [
+		{
+			docs: [
+				'es igual a',
+				'es igual que',
+				'equivale a'
+			],
+			meaning: '=='
+		},
 		{
 			docs: [
 				'si q es mayor a q',
@@ -65,14 +73,6 @@ function Classifier() {
 				'se sabe que x es menor o igual que x'
 			],
 			meaning: '<='
-		},
-		{
-			docs: [
-				'es igual a',
-				'es igual que',
-				'equivale a'
-			],
-			meaning: '=='
 		}
 	];
 	var stringUtils = new StringUtils();
@@ -97,9 +97,6 @@ function Classifier() {
 		for (var i = 0; i < documents.length; i++) {
 			var strings = stringUtils.split(text);
 			var tags = tag(strings);
-
-			console.log(strings);
-			console.log(tags);
 
 			for (var j = 0; j < documents[i].docs.length; j++) {
 				text = classifyExpression(strings, tags, documents[i].docs[j]);

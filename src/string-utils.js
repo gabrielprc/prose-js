@@ -10,7 +10,7 @@ function StringUtils() {
 	var tagger = new HmmTagger({
 		model: '../../../bin/es.hmm.json'
 	});
-	var tokenizer = new RegexpTokenizer({pattern: /((?:["'])[^"']*(?:["'])|[^"'\s]+)/ig});
+	var tokenizer = new RegexpTokenizer({pattern: /((?:["'])[^"']*(?:["'])|[^"'\.,;:\s]+)/ig});
 	var classifier = new BayesClassifier();
 
 	/*
@@ -44,7 +44,9 @@ function StringUtils() {
 		for (var i = 0; i < strings.length; i++) {
 			strings[i] = strings[i].trim();
 		}
-		return strings;
+		return strings.filter(function(string){
+		  return string !== '';
+		});
 	}
 
 	/*
