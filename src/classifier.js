@@ -13,6 +13,7 @@ function Classifier() {
 	var documents = [
 		{
 			docs: [
+				'es',
 				'es igual a',
 				'es igual que',
 				'equivale a'
@@ -21,19 +22,19 @@ function Classifier() {
 		},
 		{
 			docs: [
-				'si q es mayor a q',
-				'si qq es mayor a qq',
-				'si qqq es mayor a qqq',
-				'si qqqq es mayor a qqqq',
-				'si qqqqq es mayor a qqqqq',
-				'si q es mayor que q',
-				'si qq es mayor que qq',
-				'si qqq es mayor que qqq',
-				'si qqqq es mayor que qqqq',
-				'se tiene que x es mayor a x',
-				'se tiene que x es mayor que x',
-				'se sabe que x es mayor a x',
-				'se sabe que x es mayor que x',
+				// 'si q es mayor a q',
+				// 'si qq es mayor a qq',
+				// 'si qqq es mayor a qqq',
+				// 'si qqqq es mayor a qqqq',
+				// 'si qqqqq es mayor a qqqqq',
+				// 'si q es mayor que q',
+				// 'si qq es mayor que qq',
+				// 'si qqq es mayor que qqq',
+				// 'si qqqq es mayor que qqqq',
+				// 'se tiene que x es mayor a x',
+				// 'se tiene que x es mayor que x',
+				// 'se sabe que x es mayor a x',
+				// 'se sabe que x es mayor que x',
 				'es mayor a',
 				'es mayor que'
 			],
@@ -43,21 +44,21 @@ function Classifier() {
 			docs: [
 				'es mayor o igual a',
 				'es mayor o igual que',
-				'se tiene que x es mayor o igual a x',
-				'se tiene que x es mayor o igual que x',
-				'se sabe que x es mayor o igual a x',
-				'se sabe que x es mayor o igual que x'
+				// 'se tiene que x es mayor o igual a x',
+				// 'se tiene que x es mayor o igual que x',
+				// 'se sabe que x es mayor o igual a x',
+				// 'se sabe que x es mayor o igual que x'
 			],
 			meaning: '>='
 		},
 		{
 			docs: [
-				'si qqq es menor a qqq',
-				'si qqq es menor que qqq',
-				'se tiene que x es menor a x',
-				'se tiene que x es menor que x',
-				'se sabe que x es menor a x',
-				'se sabe que x es menor que x',
+				// 'si qqq es menor a qqq',
+				// 'si qqq es menor que qqq',
+				// 'se tiene que x es menor a x',
+				// 'se tiene que x es menor que x',
+				// 'se sabe que x es menor a x',
+				// 'se sabe que x es menor que x',
 				'es menor a',
 				'es menor que'
 			],
@@ -67,10 +68,10 @@ function Classifier() {
 			docs: [
 				'es menor o igual a',
 				'es menor o igual que',
-				'se tiene que x es menor o igual a x',
-				'se tiene que x es menor o igual que x',
-				'se sabe que x es menor o igual a x',
-				'se sabe que x es menor o igual que x'
+				// 'se tiene que x es menor o igual a x',
+				// 'se tiene que x es menor o igual que x',
+				// 'se sabe que x es menor o igual a x',
+				// 'se sabe que x es menor o igual que x'
 			],
 			meaning: '<='
 		}

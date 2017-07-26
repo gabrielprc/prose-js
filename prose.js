@@ -4,8 +4,7 @@ var Stemmer = require("./src/stemmer");
 var Translator = require("./src/translator");
 var LangDetector = require("./src/language-detector");
 var Formatter = require("./src/formatter");
-var printSteps = true;
-// var printSteps = process && process.env.NODE_ENV === "development";
+var printSteps = process && process.env.NODE_ENV === "development";
 /**
  * Natural language-to-pseudocode compiler.
  * @exports prose-js
@@ -61,7 +60,7 @@ var prose = {
 			parsed.push(p);
 		}
 
-		return parsed.length === 1 ? parsed[0] : parsed;
+		return parsed.length === 1 ? parsed[0] : parsed.join('\n\n----------\n\n');
 	}
 };
 
@@ -107,7 +106,9 @@ if (printSteps) {
 	var fs = require("fs");
 	fs.readFile("input.txt", "utf8", function(err, data) {
 		if (err) throw err;
-		prose.compileToPseudocode(data);
+		fs.writeFile("output.txt", prose.compileToPseudocode(data), function(err, data) {
+			if (err) throw err;
+		});
 	});
 }
 

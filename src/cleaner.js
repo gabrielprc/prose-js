@@ -11,8 +11,10 @@ function Cleaner(language) {
 
 	var irrelevantTags = ['ADV', 'PRON', 'DELETE'];
 	var unwantedStructures = [['VERB', 'CONJ'], ['CONJ', 'VERB']];
+	var replacementDictionary = {
+		'es': ['sea', 'será', 'era', 'son', 'fue']	//	TODO: this.
+	};
 	var unwantedWords = [];
-
 	if (language == 'spa') {
 		unwantedWords = [
 			'el', 'la', 'los', 'las',
@@ -145,6 +147,21 @@ function Cleaner(language) {
 							tags[i - 1] = 'DELETE';							
 						}
 					}
+				}
+			}
+			for (var replacement in replacementDictionary) {
+				var wordsToReplace = replacementDictionary[replacement];
+				var replaced = false;
+				for (var j = 0; j < wordsToReplace.length; j++) {
+					if (strings[i] == wordsToReplace[j]) {
+						strings[i] = replacement;
+						tags[i] = 'KEEP';
+						replaced = true;
+						break;
+					}
+				}
+				if (replaced) {
+					break;
 				}
 			}
 		}

@@ -10,15 +10,51 @@ function Translator() {
 	var STATEMENT_SEPARATOR = '\n';
 	var TAB = '\t';
 	var END_OF_STATEMENT = {
-		text: [/\s*\.+\s*/g],
+		text: [/\s*[\.,;]+\s*/g],
 		code: STATEMENT_SEPARATOR
 	};
 	var BLOCK = {
-		text: [/:\s*(?!(?:\n|$))(.+)\s*\s*(?=(?:\n|$))/g, /,\s*([^,\.]+)\s*(?=[,\.])/g],
-		code: '{' + STATEMENT_SEPARATOR + TAB + '$1' + STATEMENT_SEPARATOR +'}'
+		text: [
+			// /(?:mientras|por|para|si|sino)(?:[^,]+)\s*,\s*(.+)\s*(?=[,\.])/g,
+			/:\s*(?!(?:\n|$))(.+)\s*\s*(?=(?:\n|$))/g
+		],
+		code: 
+			'{'
+				+ STATEMENT_SEPARATOR
+					+ TAB + '$1'
+				+ STATEMENT_SEPARATOR
+			+'}'
+	};
+	var IF_ELSE_BLOCK = {
+		text: [
+			/((?:si)(?:[^,:]+))\s*(?:,|:)\s*([^\.]+)(?:[\.,])\s*(sino)(?:[:,]*)([^\.]+)(?=\.|$)/g
+		],
+		code:
+			'$1 {'
+				+ STATEMENT_SEPARATOR
+					+ TAB + '$2'
+				+ STATEMENT_SEPARATOR
+			+ '} $3 {'
+				+ STATEMENT_SEPARATOR
+					+ TAB + '$4'
+				+ STATEMENT_SEPARATOR
+			+ '}'
+	};
+	var CONDITIONAL_BLOCK = {
+		text: [
+			/((?:mientras|por|para|si|sino)(?:[^,:]+))\s*(?:,|:)\s*(.+)\s*(?=[,\.])/g
+			],
+		code:
+			'$1 {'
+				+ STATEMENT_SEPARATOR
+					+ TAB + '$2'
+				+ STATEMENT_SEPARATOR
+			+ '}'
 	};
 	var JOINED_BLOCKS = {
-		text: [/\s*}\s*{\s*/g],
+		text: [
+			/\s*}\s*{\s*/g
+		],
 		code: STATEMENT_SEPARATOR
 	};
 	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/;
@@ -30,6 +66,8 @@ function Translator() {
 	 */
 	this.translate = function(text) {
 		text = replace(text, BLOCK);
+		text = replace(text, IF_ELSE_BLOCK);
+		text = replace(text, CONDITIONAL_BLOCK);
 		text = replace(text, JOINED_BLOCKS);
 		text = replace(text, END_OF_STATEMENT);
 		text = translateStatements(text);

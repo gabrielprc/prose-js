@@ -5,7 +5,8 @@
   "main": "prose.js",
   "scripts": {
     "start": "NODE_ENV=development node prose.js",
-    "test": "jasmine-node test"
+    "test": "jasmine-node test",
+    "debug": "NODE_ENV=development node --inspect --debug-brk prose.js"
   },
   "repository": {
     "type": "git",
@@ -37,7 +38,7 @@
     "bayes-classifier": "0.0.3",
     "franc": "^2.0.0",
     "js-beautify": "^1.6.12",
-    "natural": "^0.5.1",
+    "natural": "^0.5.4",
     "salient": "^0.2.1"
   }
 }
