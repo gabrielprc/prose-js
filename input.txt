@@ -14,5 +14,5 @@ Inicialmente se sabe que lista de alumnos contiene a "Juan", "Florencia", "Juan"
 
 Luego, por cada nombre en la lista de alumnos: si el nombre es igual a "Juan", juan es igual a juan más 1. Sino, otros es igual a otros más 1.
 
-Si juan es mayor a otros, entonces la repetición es verdadera. Sino, la repetición es falsa.
+Finalmente, si juan es mayor a otros, entonces la repetición es verdadera. Sino, la repetición es falsa.
 
