@@ -42,7 +42,7 @@ function StringUtils() {
 	this.split = function(string) {
 		var strings = tokenizer.tokenize(string);
 		for (var i = 0; i < strings.length; i++) {
-			strings[i] = strings[i].trim();
+			strings[i] = strings[i].replace(/ +/, '');
 		}
 		return strings.filter(function(string){
 		  return string !== '';
