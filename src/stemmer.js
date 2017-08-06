@@ -3,9 +3,13 @@
  * @exports Stemmer
  */
 
+var StringUtils = require('./string-utils');
 var PorterStemmerEs = require('natural/lib/natural/stemmers/porter_stemmer_es');
 
 function Stemmer() {
+
+	var stringUtils = new StringUtils();
+	var tagger = stringUtils.getTagger();
 
 	/*
 	 * Returns the stemmed string if possible, or the original string.
@@ -13,7 +17,19 @@ function Stemmer() {
 	 * @param {string} string - String to stem.
 	 */
 	this.stem = function(string) {
-		return PorterStemmerEs.stem(string);
+		var strings = stringUtils.split(string);
+		var tags = tagger.tag(strings);
+
+		for (var i = 0; i < strings.length; i++) {
+			if (tags[i] === 'VERB') {
+				var stem = PorterStemmerEs.stem(strings[i]);
+				if (stem === 'ser' || stem === 'se') {	//	Replace infinitive of the verb 'to be' with the relevant translation for pseudocode
+					strings[i] = 'es';
+				}
+			}
+		}
+
+		return stringUtils.join(strings);
 	}
 
 }

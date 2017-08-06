@@ -16,18 +16,18 @@ function Translator() {
 	var STATEMENT_SEPARATOR = '\n';
 	var TAB = '\t';
 	var STRICT_END_OF_STATEMENT = {
-		text: [/\s*[\.;]+\s*/g],
+		text: [/\s*[\.;]+\s*/ig],
 		code: STATEMENT_SEPARATOR
 	};
 	var END_OF_STATEMENT = {
 		// text: [/\s*[\.,;]+\s*/g],
-		text: [/(?:[^\\])(\s*(?:, +y|[\.,;])+\s*)/g],
+		text: [/(?:[^\\])(\s*(?:, +y|[\.,;])+\s*)/i],
 		code: STATEMENT_SEPARATOR
 	};
 	var BLOCK = {
 		text: [
 			// /(?:mientras|por|para|si|sino)(?:[^,]+)\s*,\s*(.+)\s*(?=[,\.])/g,
-			/:\s*(?!(?:\n|$))(.+)\s*\s*(?=(?:\n|$))/g
+			/:\s*(?!(?:\n|$))(.+)\s*\s*(?=(?:\n|$))/ig
 		],
 		code: 
 			'{'
@@ -38,7 +38,7 @@ function Translator() {
 	};
 	var IF_ELSE_BLOCK = {
 		text: [
-			/((?:si)(?:[^,:]+))\s*(?:,|:)\s*([^\.]+)(?:[\.,])\s*(sino)(?:[:,]*)([^\.]+)(?=\.|$)/g
+			/((?:si)(?:[^,:]+))\s*(?:,|:)\s*([^\.]+)(?:[\.,])\s*(sino)(?:[:,]*)([^\.]+)(?=\.|$)/ig
 		],
 		code:
 			'$1 {'
@@ -53,7 +53,7 @@ function Translator() {
 	};
 	var CONDITIONAL_BLOCK = {
 		text: [
-			/((?:mientras|por|para|si|sino)(?:[^,:]+))\s*(?:,|:)\s*(.+)\s*(?=[,\.])/g
+			/((?:mientras|por|para|si|sino)(?:[^,:]+))\s*(?:,|:)\s*(.+)\s*(?=[,\.])/ig
 			],
 		code:
 			'$1 {'
@@ -64,19 +64,19 @@ function Translator() {
 	};
 	var JOINED_BLOCKS = {
 		text: [
-			/\s*}\s*{\s*/g
+			/\s*}\s*{\s*/ig
 		],
 		code: STATEMENT_SEPARATOR
 	};
 	var ESCAPED_CHARACTERS = {
 		text: [
-			/(?:\\)([\.,;])/g
+			/(?:\\)([\.,;])/ig
 		],
 		code: '$1'
 	};
-	var END_OF_STATEMENT_PATTERN = /(?:[^\\])(\s*[\.,;]+\s*)/;
-	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/;
-	var LIST_PATTERN = /(?!(?:\s+|}|$))([\w ]+) +contiene +(?:a +)?([^\.\n]+)(?=\.|$)/;
+	var END_OF_STATEMENT_PATTERN = /(?:[^\\])(\s*[\.,;]+\s*)/i;
+	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/i;
+	var LIST_PATTERN = /(?!(?:\s+|}|$))([\w ]+) +contiene +(?:a +)?([^\.\n]+)(?=\.|$)/i;
 
 	/*
 	 * Returns the text translated to pseudocode.

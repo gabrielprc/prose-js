@@ -150,21 +150,21 @@ function Cleaner(language) {
 					}
 				}
 			}
-			for (var replacement in replacementDictionary) {
-				var wordsToReplace = replacementDictionary[replacement];
-				var replaced = false;
-				for (var j = 0; j < wordsToReplace.length; j++) {
-					if (strings[i] == wordsToReplace[j]) {
-						strings[i] = replacement;
-						tags[i] = 'KEEP';
-						replaced = true;
-						break;
-					}
-				}
-				if (replaced) {
-					break;
-				}
-			}
+			// for (var replacement in replacementDictionary) {
+			// 	var wordsToReplace = replacementDictionary[replacement];
+			// 	var replaced = false;
+			// 	for (var j = 0; j < wordsToReplace.length; j++) {
+			// 		if (strings[i] == wordsToReplace[j]) {
+			// 			strings[i] = replacement;
+			// 			tags[i] = 'KEEP';
+			// 			replaced = true;
+			// 			break;
+			// 		}
+			// 	}
+			// 	if (replaced) {
+			// 		break;
+			// 	}
+			// }
 		}
 	}
 
