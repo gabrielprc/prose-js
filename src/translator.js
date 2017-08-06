@@ -10,7 +10,8 @@ function Translator() {
 	var STATEMENT_SEPARATOR = '\n';
 	var TAB = '\t';
 	var END_OF_STATEMENT = {
-		text: [/\s*[\.,;]+\s*/g],
+		// text: [/\s*[\.,;]+\s*/g],
+		text: [/(?:[^\\])(\s*[\.,;]+\s*)/g],
 		code: STATEMENT_SEPARATOR
 	};
 	var BLOCK = {
@@ -57,7 +58,15 @@ function Translator() {
 		],
 		code: STATEMENT_SEPARATOR
 	};
+	var ESCAPED_CHARACTERS = {
+		text: [
+			/(?:\\)([\.,;])/g
+		],
+		code: '$1'
+	};
+	var END_OF_STATEMENT_PATTERN = /(?:[^\\])(\s*[\.,;]+\s*)/;
 	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/;
+	var LIST_PATTERN = /(?!(?:\s+|}|$))([\w ]+) +contiene +(?:a +)?([^\.\n]+)(?=\.|$)/;
 
 	/*
 	 * Returns the text translated to pseudocode.
@@ -69,15 +78,24 @@ function Translator() {
 		text = replace(text, IF_ELSE_BLOCK);
 		text = replace(text, CONDITIONAL_BLOCK);
 		text = replace(text, JOINED_BLOCKS);
-		text = replace(text, END_OF_STATEMENT);
 		text = translateStatements(text);
+		text = replace(text, END_OF_STATEMENT, true);
+		text = replace(text, ESCAPED_CHARACTERS);
 		return text;
 	}
 
-	function replace(string, replaceParams) {
+	function replace(string, replaceParams, isGrouped) {
 		for (var i = 0; i < replaceParams.text.length; i++) {
 			while (replaceParams.text[i].test(string)) {
-				string = string.replace(replaceParams.text[i], replaceParams.code);
+				if (isGrouped) {
+					var matches = null;
+					while (!matches) {
+						matches = replaceParams.text[i].exec(string);	//	Special thanks to the masterminds behind JS regular expressions
+					}
+					string = string.replace(new RegExp(escapeRegExp(matches[1]), 'g'), replaceParams.code);
+				} else {
+					string = string.replace(replaceParams.text[i], replaceParams.code);
+				}
 			}
 		}
 		return string;
@@ -104,11 +122,32 @@ function Translator() {
 			var matches = FOR_EACH_PATTERN.exec(statement);
 
 			statement = statement
-				.replace(new RegExp(matches[1], 'g'), stringUtils.toCamelCase(matches[1]))
-				.replace(new RegExp(matches[2], 'g'), stringUtils.toCamelCase(matches[2]));
+				.replace(new RegExp(escapeRegExp(matches[1]), 'g'), stringUtils.toCamelCase(matches[1]))
+				.replace(new RegExp(escapeRegExp(matches[2]), 'g'), stringUtils.toCamelCase(matches[2]));
 		}
 
+		if (LIST_PATTERN.test(statement)) {
+			var matches = LIST_PATTERN.exec(statement);
+
+			var listName = stringUtils.toCamelCase(matches[1]);
+			var listElements = matches[2]
+				.replace(/ +[ye] +/g, ', ')		//	Replace ' y ' with a separation comma.
+				.replace(/,/g, '\\,');			//	Escape commas to prevent them from being detected as END OF STATEMENT.
+
+			statement = listName + ' = [' + listElements + ']';
+		}
+
+		// while (END_OF_STATEMENT_PATTERN.test(statement)) {
+		// 	var matches = END_OF_STATEMENT_PATTERN.exec(statement);
+
+		// 	statement = statement.replace(new RegExp(matches[1], 'g'), STATEMENT_SEPARATOR);
+		// }
+
 		return statement;
+	}
+
+	function escapeRegExp(str) {
+		return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 	}
 
 }

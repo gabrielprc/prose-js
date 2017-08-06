@@ -7,3 +7,8 @@ Luego, por cada valor en una lista de valores: si valor es mayor a 2, x es igual
 La variable números es una lista.
 
 Mientras cambio sea verdadero: cambio es falso e i es 0. Mientras i sea menor al largo de números: si números[i] es mayor a números[i + 1]: una variable temporal es números[i], números[i] es números[i + 1] y números[i + 1] es temporal, y cambio es verdadero. Además, i es i + 1.
+
+--------
+
+La lista de alumnos contiene a "Florencia", "Juan" y "Ana".
+

@@ -4,7 +4,7 @@ var Stemmer = require("./src/stemmer");
 var Translator = require("./src/translator");
 var LangDetector = require("./src/language-detector");
 var Formatter = require("./src/formatter");
-var printSteps = process && process.env.NODE_ENV === "development";
+var printSteps = true;
 /**
  * Natural language-to-pseudocode compiler.
  * @exports prose-js
@@ -51,11 +51,13 @@ var prose = {
 
 			p = translate(p);
 			if (printSteps) {
-				print("Translated text", p);
+				print("Translated pseudocode", p);
 			}
 
 			p = format(p);
-			print("Formatted text", p);
+			print("Formatted pseudocode", p);
+
+			printSeparator(true);
 
 			parsed.push(p);
 		}
@@ -96,10 +98,19 @@ function format(string) {
 
 function print(title, string) {
 	console.log("\n" + title);
-	console.log("==========");
+	printSeparator();
 	if (string) {
 		console.log(string);
 	}
+}
+
+function printSeparator(large) {
+	if (large) {
+		var separator = "\n\n\n\n\n================================================================================\n\n\n\n";
+	} else {
+		var separator = "==========";
+	}
+	console.log(separator);
 }
 
 if (printSteps) {
