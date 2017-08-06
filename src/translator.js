@@ -7,11 +7,21 @@ var StringUtils = require('./string-utils');
 
 
 function Translator() {
+	// Observation: Commas are taken as "less strict" end-of-statement characters,
+	// since commas may also be used when enumerating list elements.
+	// Because of this, statement separation is done twice,
+	// the first time taking in consideration only "stricter" characters like ";" and ".",
+	// and the second time taking in consideration also commas (when not escaped).
+
 	var STATEMENT_SEPARATOR = '\n';
 	var TAB = '\t';
+	var STRICT_END_OF_STATEMENT = {
+		text: [/\s*[\.;]+\s*/g],
+		code: STATEMENT_SEPARATOR
+	};
 	var END_OF_STATEMENT = {
 		// text: [/\s*[\.,;]+\s*/g],
-		text: [/(?:[^\\])(\s*[\.,;]+\s*)/g],
+		text: [/(?:[^\\])(\s*(?:, +y|[\.,;])+\s*)/g],
 		code: STATEMENT_SEPARATOR
 	};
 	var BLOCK = {
@@ -78,6 +88,7 @@ function Translator() {
 		text = replace(text, IF_ELSE_BLOCK);
 		text = replace(text, CONDITIONAL_BLOCK);
 		text = replace(text, JOINED_BLOCKS);
+		text = replace(text, STRICT_END_OF_STATEMENT);
 		text = translateStatements(text);
 		text = replace(text, END_OF_STATEMENT, true);
 		text = replace(text, ESCAPED_CHARACTERS);
