@@ -23,7 +23,7 @@ function Stemmer() {
 		for (var i = 0; i < strings.length; i++) {
 			if (tags[i] === 'VERB') {
 				var stem = PorterStemmerEs.stem(strings[i]);
-				if (stem === 'ser' || stem === 'se') {	//	Replace infinitive of the verb 'to be' with the relevant translation for pseudocode
+				if (stem === 'ser' || stem === 'se' || stem === 'estar' || stem === 'est' || stem === 'esta') {	//	Replace infinitive of the verb 'to be' with the relevant translation for pseudocode
 					strings[i] = 'es';
 				}
 			}

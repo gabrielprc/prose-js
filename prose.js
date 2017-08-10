@@ -24,40 +24,42 @@ var prose = {
 			var p = parsables[i].trim();
 
 			if (printSteps) {
-				print("Parsing piece #" + (i + 1));
-				print("Original text", p);
+				print("Leyendo parte #" + (i + 1));
+				print("Texto original", p);
 			}
 
 			// var lang = detectLanguage(parsable);
 			var lang = "spa";
 			if (printSteps) {
-				print("Language detected", lang);
+				print("Lenguaje detectado", lang);
 			}
 
 			p = classify(p);
 			if (printSteps) {
-				print("Classified text", p);
+				print("Texto clasificado", p);
 			}
 
 			p = clean(p, lang);
 			if (printSteps) {
-				print("Clean text", p);
+				print("Texto limpio", p);
 			}
 
 			p = stem(p, lang);
 			if (printSteps) {
-				print("Stemmed text", p);
+				print("Texto stemmed", p);
 			}
 
 			p = translate(p);
 			if (printSteps) {
-				print("Translated pseudocode", p);
+				print("Texto traducido", p);
 			}
 
 			p = format(p);
-			print("Formatted pseudocode", p);
+			print("Pseudocódigo", p);
 
-			printSeparator(true);
+			if (printSteps) {
+				printSeparator(true);
+			}
 
 			parsed.push(p);
 		}
@@ -114,11 +116,14 @@ function printSeparator(large) {
 }
 
 if (printSteps) {
+	console.log("Leyendo el texto natural desde input.txt...\n...\n...");
 	var fs = require("fs");
 	fs.readFile("input.txt", "utf8", function(err, data) {
 		if (err) throw err;
+		console.log("Procesando el texto natural...\n...\n...");
 		fs.writeFile("output.txt", prose.compileToPseudocode(data), function(err, data) {
 			if (err) throw err;
+			console.log("Proceso completo! Los resultados se guardaron en output.txt");
 		});
 	});
 }
