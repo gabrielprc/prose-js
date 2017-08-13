@@ -10,9 +10,17 @@ Mientras cambio sea verdadero: cambio es falso e i es 0. Mientras i sea menor al
 
 --------
 
+Inicialmente se sabe que el semáforo está "rojo", y el auto está "parado". Luego, si el semáforo está "verde", el auto está "avanzando". Sino, el auto está "parado".
+
+--------
+
 Inicialmente se sabe que la lista de alumnos contiene a "Juan", "Florencia", "Juan" y "Ana". Además, la variable juan es igual a 0, y también la variable otros es igual a 0.
 
 Luego, por cada nombre en la lista de alumnos: si el nombre es igual a "Juan", juan es igual a juan más 1. Sino, otros es igual a otros más 1.
 
-Finalmente, si juan es mayor a otros, la repetición será verdadera. Sino, la repetición será falsa.
+Luego, mostrar la repetición.
+
+Si juan es mayor a otros, la repetición será verdadera. Sino, la repetición será falsa.
+
+Finalmente, calcular la repetición y la repetición.
 

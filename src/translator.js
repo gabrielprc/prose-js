@@ -12,6 +12,8 @@ function Translator() {
 	// Because of this, statement separation is done twice,
 	// the first time taking in consideration only "stricter" characters like ";" and ".",
 	// and the second time taking in consideration also commas (when not escaped).
+	var stringUtils = new StringUtils();
+	var tagger = stringUtils.getTagger();
 
 	var STATEMENT_SEPARATOR = '\n';
 	var TAB = '\t';
@@ -77,6 +79,7 @@ function Translator() {
 	var END_OF_STATEMENT_PATTERN = /(?:[^\\])(\s*[\.,;]+\s*)/i;
 	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/i;
 	var LIST_PATTERN = /(?!(?:\s+|}|$))([\w ]+) +contiene +(?:a +)?([^\.\n]+)(?=\.|$)/i;
+	var WORD_REGEX = /^[a-z\u00E0-\u00FC]+$/;
 
 	/*
 	 * Returns the text translated to pseudocode.
@@ -92,6 +95,7 @@ function Translator() {
 		text = translateStatements(text);
 		text = replace(text, END_OF_STATEMENT, true);
 		text = replace(text, ESCAPED_CHARACTERS);
+		text = replaceFunctions(text);
 		return text;
 	}
 
@@ -127,8 +131,6 @@ function Translator() {
 	}
 
 	function translateStatement(statement) {
-		var stringUtils	= new StringUtils();
-
 		if (FOR_EACH_PATTERN.test(statement)) {
 			var matches = FOR_EACH_PATTERN.exec(statement);
 
@@ -159,6 +161,46 @@ function Translator() {
 
 	function escapeRegExp(str) {
 		return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
+	function replaceFunctions(string) {
+		//	Any verbs other than TO BE are considered function calls
+		if (typeof string === 'string') {
+			var strings = stringUtils.split(string);
+		} else {
+			var strings = string;
+		}
+		var tags = tagger.tag(strings);
+
+		for (var i = 0; i < strings.length; i++) {
+			if (tags[i] === 'VERB' && strings[i] !== 'es' && WORD_REGEX.test(strings[i])) {
+				//	Once a call is found, sorround parameters with parenthesis.
+				var fun = strings[i];
+				var params = [];
+				for (var j = i + 1; j < strings.length; j++) {
+					if (tags[j] === '.' || !WORD_REGEX.test(strings[j])) {
+						break;
+					}
+					//	If more than one parameter and separated by a conjunction,
+					//	replace conjunction with a comma.
+					if (tags[j] === 'CONJ') {
+						params.push(',');
+					} else {
+						params.push(strings[j]);
+					}
+				}
+
+				var finalStrings = strings.slice(0, i);
+				finalStrings.push(fun);
+				finalStrings.push('(');
+				finalStrings = finalStrings.concat(params);
+				finalStrings.push(')');
+
+				return stringUtils.join(finalStrings) + ' ' + replaceFunctions(strings.slice(j));
+			}
+		}
+
+		return string;
 	}
 
 }
