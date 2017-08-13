@@ -24,3 +24,6 @@ Si juan es mayor a otros, la repetición será verdadera. Sino, la repetición s
 
 Finalmente, calcular la repetición y la repetición.
 
+--------
+
+Mi nombre es "Gabriel"
