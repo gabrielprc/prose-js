@@ -14,15 +14,11 @@ Inicialmente se sabe que el semáforo está "rojo", y el auto está "parado". Lu
 
 --------
 
-Inicialmente se sabe que la lista de alumnos contiene a "Juan", "Florencia", "Juan" y "Ana". Además, la variable juan es igual a 0, y también la variable otros es igual a 0.
+Inicialmente se sabe que la lista de alumnos contiene a "Juan", "Florencia", "Juan" y "Ana". Además, la variable juan es 0, y también la variable otros es 0.
 
-Luego, por cada nombre en la lista de alumnos: si el nombre es igual a "Juan", juan es igual a juan más 1. Sino, otros es igual a otros más 1.
-
-Luego, mostrar la repetición.
+Luego, por cada nombre en la lista de alumnos: si el nombre es "Juan", juan es juan más 1. Sino, otros es otros más 1.
 
 Si juan es mayor a otros, la repetición será verdadera. Sino, la repetición será falsa.
-
-Finalmente, calcular la repetición y la repetición.
 
 --------
 
