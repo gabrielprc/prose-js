@@ -72,6 +72,9 @@ function Cleaner(language) {
 		var tags = tagger.tag(strings);
 
 		for (var i = 0; i < tags.length; i++) {
+			if (stringUtils.isComment(strings, i)) {
+				continue;
+			}
 			for (var j = 0; j < unwantedStructures.length; j++) {
 				if (tags[i] == unwantedStructures[j][0] && i + j <= tags.length) {
 					var isUnwantedStructure = true;
@@ -101,18 +104,24 @@ function Cleaner(language) {
 	 * @param {string} string - String to clean.
 	 */
 	function removeWords(string) {
-		var regex = '';
-		for (var i = 0; i < unwantedWords.length; i++) {
-			if (i > 0 != '') {
-				regex += '|';
-			}
-			regex += unwantedWords[i];
+		if (typeof string === 'string') {
+			var strings = stringUtils.split(string);
+		} else {
+			var strings = string;
 		}
-		regex = '(?:\\b|\\W)(' + regex + ')(?:\\W|\\b)';
 
-		string = string.replace(new RegExp(regex, 'ig'), ' ');
+		var hasUnwanted = true;
+		while (hasUnwanted) {
+			hasUnwanted = false;
+			for (var i = 0; i < strings.length; i++) {
+				if (!stringUtils.isComment(strings, i) && unwantedWords.indexOf(strings[i].toLowerCase()) > -1) {
+					strings.splice(i, 1);
+					hasUnwanted = true;
+					break;
+				}
+			}
+		}
 
-		var strings = stringUtils.split(string);
 		var tags = tagger.tag(strings);
 
 		translateWords(strings, tags);
@@ -120,6 +129,26 @@ function Cleaner(language) {
 		strings = removeIrrelevantWords(strings, tags);
 
 		return stringUtils.join(strings);
+
+		// var regex = '';
+		// for (var i = 0; i < unwantedWords.length; i++) {
+		// 	if (i > 0 != '') {
+		// 		regex += '|';
+		// 	}
+		// 	regex += unwantedWords[i];
+		// }
+		// regex = '(?:\\b|\\W)(' + regex + ')(?:\\W|\\b)';
+
+		// string = string.replace(new RegExp(regex, 'ig'), ' ');
+
+		// var strings = stringUtils.split(string);
+		// var tags = tagger.tag(strings);
+
+		// translateWords(strings, tags);
+
+		// strings = removeIrrelevantWords(strings, tags);
+
+		// return stringUtils.join(strings);
 	}
 
 	/*
@@ -179,7 +208,7 @@ function Cleaner(language) {
 		var relevantStrings = [];
 
 		for (var i = 0; i < strings.length; i++) {
-			if (isRelevant(tags[i])) {
+			if (isRelevant(tags[i]) || stringUtils.isComment(strings, i)) {
 				relevantStrings.push(strings[i]);
 			}
 		}

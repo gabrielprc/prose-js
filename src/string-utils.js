@@ -76,6 +76,45 @@ function StringUtils() {
 		return camelCased;
 	}
 
+	/*
+	 * Returns a boolean value of wether the string of the given index
+	 * within an array of strings is actually part of a comment line.
+	 *
+	 * @param {array} strings - Array of strings (tokenized code).
+	 * @param {number} index - Index of the word to look out for in the array.
+	 */
+	 this.isComment = function(strings, index) {
+	 	var string = strings[index];
+
+	 	if (string.indexOf('\n') > -1) {
+	 		return false;
+	 	}
+
+	 	if (string.indexOf('//') > -1) {
+	 		return true;
+	 	}
+
+	 	if (index === 0) {
+	 		return false;	
+	 	}
+
+	 	var lineStart = index;
+	 	for (var i = index; i >= 0; i--) {
+	 		if (strings[i].indexOf('\n') > -1) {
+	 			lineStart = i + 1;
+	 			break;
+	 		} else {
+	 			lineStart = i;
+	 		}
+	 	}
+
+	 	if (strings[lineStart].indexOf('//') > -1) {
+	 		return true;
+	 	}
+
+	 	return false;
+	 }
+
 }
 
 module.exports = StringUtils;
