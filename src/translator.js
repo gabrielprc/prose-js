@@ -178,7 +178,7 @@ function Translator() {
 				var fun = strings[i];
 				var params = [];
 				for (var j = i + 1; j < strings.length; j++) {
-					if (tags[j] === '.' || !WORD_REGEX.test(strings[j])) {
+					if (tags[j] === '.') {
 						break;
 					}
 					//	If more than one parameter and separated by a conjunction,

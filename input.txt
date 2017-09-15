@@ -37,3 +37,5 @@ Luego, por cada nombre en la lista de alumnos: si el nombre es "Juan", juan es j
 
 Si juan es mayor a otros, la repetición será verdadera. Sino, la repetición será falsa.
 //	El coco loco es re loco
+
+Finalmente, evaluar juan + otros.

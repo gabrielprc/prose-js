@@ -37,7 +37,7 @@ function Cleaner(language) {
 		string = removeStructures(string);
 		string = removeWords(string);
 		string = removePunctuation(string);
-		return string;
+		return string.trim();
 	}
 
 	/*
@@ -53,7 +53,7 @@ function Cleaner(language) {
 			.replace(/[\!|¡|\?|¿|]/g, '')				//	Remove these punctuation characters
 			.replace(/{ *, *}+/g, ',')					//	Remove multiple commas
 			.replace(/(\. *,|, *\.)/g, '.')				//	Remove ill-placed commas
-			.replace(/\n+([.,;:¡!¿?])/g, '\n')			//	Remove ill-placed punctuation characters 
+			.replace(/(\n+|^)([.,;:¡!¿?])/g, '\n')			//	Remove ill-placed punctuation characters 
 			.replace(/\.+/g, '.');						//	Remove multiple periods
 	}
 
