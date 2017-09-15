@@ -1,6 +1,6 @@
 {
   "name": "prose-js",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "Natural language-to-pseudocode compiler.",
   "main": "prose.js",
   "scripts": {
