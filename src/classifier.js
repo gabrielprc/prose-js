@@ -190,6 +190,20 @@ function Classifier() {
 		if (expressionTags.length <= tags.length) {
 			for (var i = 0; i < tags.length - expressionTags.length; i++) {
 				if (tags[i] == expressionTags[0]) {
+					var isBroken = false;
+					for (var k = i + 1; k < expressionTags.length - 1; k++) {
+						if (tags[i + k] == '.') {
+							console.log(strings[i + k]);
+							i += k;
+							isBroken = true;
+							break;
+						}
+					}
+
+					if (isBroken) {
+						break;
+					}
+
 					for (var j = expressionTags.length - 1; j < expressionTags.length + wordDistanceTolerance; j++) {
 						if (tags[i + j] == '.' && strings[i + j].trim() !== '') {
 							i += j;
