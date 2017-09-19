@@ -79,7 +79,7 @@ function Translator() {
 	var END_OF_STATEMENT_PATTERN = /(?:[^\\])(\s*[\.,;]+\s*)/i;
 	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))por +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/i;
 	var LIST_PATTERN = /(?!(?:\s+|}|$))([\w ]+) +contiene +(?:a +)?([^\.\n]+)(?=\.|$)/i;
-	var WORD_REGEX = /^[a-z\u00E0-\u00FC]+$/;
+	var WORD_REGEX = /^[A-Za-z\u00E0-\u00FC]+$/;
 
 	/*
 	 * Returns the text translated to pseudocode.
@@ -173,25 +173,36 @@ function Translator() {
 		var tags = tagger.tag(strings);
 
 		for (var i = 0; i < strings.length; i++) {
-			if (tags[i] === 'VERB' && strings[i] !== 'es' && WORD_REGEX.test(strings[i])) {
+			if (
+				tags[i] === 'VERB'
+				&& strings[i].trim() !== ''
+				&& strings[i] !== 'es'
+				&& WORD_REGEX.test(strings[i])
+			) {
 				//	Once a call is found, sorround parameters with parenthesis.
 				var fun = strings[i];
 				var params = [];
 				for (var j = i + 1; j < strings.length; j++) {
-					if (tags[j] === '.') {
+					if (
+						tags[j] === '.'
+						|| tags[j] === 'CONJ'
+						|| strings[j].trim() === ''
+					) {
 						break;
 					}
+					params.push(strings[j]);
+
 					//	If more than one parameter and separated by a conjunction,
 					//	replace conjunction with a comma.
-					if (tags[j] === 'CONJ') {
-						params.push(',');
-					} else {
-						params.push(strings[j]);
-					}
+					// if (tags[j] === 'CONJ') {
+					// 	params.push(',');
+					// } else {
+					// 	params.push(strings[j]);
+					// }
 				}
 
 				var finalStrings = strings.slice(0, i);
-				finalStrings.push(fun);
+				finalStrings.push(fun.toLowerCase());
 				finalStrings.push('(');
 				finalStrings = finalStrings.concat(params);
 				finalStrings.push(')');
