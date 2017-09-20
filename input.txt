@@ -41,3 +41,5 @@ Si juan es mayor a otros, la repetición será verdadera. Sino, la repetición s
 Finalmente, evaluar juan + otros.
 
 Mostrar juan.
+
+Mostrar otros.
