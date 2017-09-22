@@ -211,7 +211,7 @@ function Translator() {
 			}
 		}
 
-		return string;
+		return stringUtils.join(strings);
 	}
 
 }
