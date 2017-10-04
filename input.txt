@@ -43,3 +43,24 @@ Finalmente, evaluar juan + otros.
 Mostrar juan.
 
 Mostrar otros.
+
+--------
+
+Se sabe que mi nombre es "Gabriel Rodriguez". Primero mostrar el nombre, luego evaluar el nombre.
+
+--------
+
+Mi edad es 23.
+
+Si mi edad es igual a 18, mi estado es "mayor de edad". 
+
+Finalmente, evaluar el estado.
+
+--------
+
+Mi edad es 23.
+
+Luego, si mi edad es mayor o igual a 18, la variable estado es "mayor de edad". Sino, el estado es "responsable por la desaparición de Santiago Maldonado".
+Después, mostrar la variable estado.
+
+Finalmente, evaluar el estado.

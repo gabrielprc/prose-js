@@ -41,62 +41,6 @@ function Classifier() {
 		},
 		{
 			docs: [
-				'es mayor a',
-				'es mayor a',
-				'es mayor a',
-				'es mayor a',
-				'es mayor a',
-				'es mayor que',
-				'es mayor que',
-				'es mayor que',
-				'es mayor que',
-				'es mayor que'
-				// 'si q es mayor a q',
-				// 'si qq es mayor a qq',
-				// 'si qqq es mayor a qqq',
-				// 'si qqqq es mayor a qqqq',
-				// 'si qqqqq es mayor a qqqqq',
-				// 'si q es mayor que q',
-				// 'si qq es mayor que qq',
-				// 'si qqq es mayor que qqq',
-				// 'si qqqq es mayor que qqqq',
-				// 'se tiene que x es mayor a x',
-				// 'se tiene que x es mayor que x',
-				// 'se sabe que x es mayor a x',
-				// 'se sabe que x es mayor que x'
-			],
-			meaning: '>'
-		},
-		{
-			docs: [
-				'es menor a',
-				'es menor a',
-				'es menor a',
-				'es menor a',
-				'es menor a',
-				'es menor que',
-				'es menor que',
-				'es menor que',
-				'es menor que',
-				'es menor que'
-				// 'si q es menor a q',
-				// 'si qq es menor a qq',
-				// 'si qqq es menor a qqq',
-				// 'si qqqq es menor a qqqq',
-				// 'si qqqqq es menor a qqqqq',
-				// 'si q es menor que q',
-				// 'si qq es menor que qq',
-				// 'si qqq es menor que qqq',
-				// 'si qqqq es menor que qqqq',
-				// 'se tiene que x es menor a x',
-				// 'se tiene que x es menor que x',
-				// 'se sabe que x es menor a x',
-				// 'se sabe que x es menor que x'
-			],
-			meaning: '<'
-		},
-		{
-			docs: [
 				'es mayor o igual a',
 				'es mayor o igual a',
 				'es mayor o igual a',
@@ -150,6 +94,62 @@ function Classifier() {
 				// 'se sabe que x es menor o igual que x'
 			],
 			meaning: '<='
+		},
+		{
+			docs: [
+				'es mayor a',
+				'es mayor a',
+				'es mayor a',
+				'es mayor a',
+				'es mayor a',
+				'es mayor que',
+				'es mayor que',
+				'es mayor que',
+				'es mayor que',
+				'es mayor que'
+				// 'si q es mayor a q',
+				// 'si qq es mayor a qq',
+				// 'si qqq es mayor a qqq',
+				// 'si qqqq es mayor a qqqq',
+				// 'si qqqqq es mayor a qqqqq',
+				// 'si q es mayor que q',
+				// 'si qq es mayor que qq',
+				// 'si qqq es mayor que qqq',
+				// 'si qqqq es mayor que qqqq',
+				// 'se tiene que x es mayor a x',
+				// 'se tiene que x es mayor que x',
+				// 'se sabe que x es mayor a x',
+				// 'se sabe que x es mayor que x'
+			],
+			meaning: '>'
+		},
+		{
+			docs: [
+				'es menor a',
+				'es menor a',
+				'es menor a',
+				'es menor a',
+				'es menor a',
+				'es menor que',
+				'es menor que',
+				'es menor que',
+				'es menor que',
+				'es menor que'
+				// 'si q es menor a q',
+				// 'si qq es menor a qq',
+				// 'si qqq es menor a qqq',
+				// 'si qqqq es menor a qqqq',
+				// 'si qqqqq es menor a qqqqq',
+				// 'si q es menor que q',
+				// 'si qq es menor que qq',
+				// 'si qqq es menor que qqq',
+				// 'si qqqq es menor que qqqq',
+				// 'se tiene que x es menor a x',
+				// 'se tiene que x es menor que x',
+				// 'se sabe que x es menor a x',
+				// 'se sabe que x es menor que x'
+			],
+			meaning: '<'
 		}
 	];
 	var stringUtils = new StringUtils();
@@ -174,10 +174,9 @@ function Classifier() {
 		for (var i = 0; i < documents.length; i++) {
 			var strings = stringUtils.split(text);
 			var tags = tag(strings);
-			console.log(tags);
 
 			for (var j = 0; j < documents[i].docs.length; j++) {
-				text = classifyExpression(strings, tags, documents[i].docs[j]);
+				text = classifyExpression(strings, tags, documents[i].docs[j], documents[i].meaning);
 				strings = stringUtils.split(text);
 				tags = tag(strings);
 			}
@@ -185,7 +184,7 @@ function Classifier() {
 		return text.replace(/\ +/g, ' ');
 	}
 
-	function classifyExpression(strings, tags, expression) {
+	function classifyExpression(strings, tags, expression, meaning) {
 		var expressionTags = tag(stringUtils.split(expression));
 
 		if (expressionTags.length <= tags.length) {
@@ -214,20 +213,22 @@ function Classifier() {
 
 							if (!(containsPunctuation(matchingExpression) && !containsPunctuation(expression))) {
 								var classifications = classifier.getClassifications(matchingExpression);
-								if (
-									classifications.length > 0
-									&& (
-										classifications[0].value >= minimumClassificationValue
-										|| matchingExpression === expression
-									)
-								) {
-									var text = 
-										stringUtils.join(
-											strings.slice(0, i)
-											.concat(classifications[0].label)
-											.concat(strings.slice(i + j + 1, strings.length))
-										);
-									return _self.classify(text);
+								for (var k = 0; k < classifications.length; k++) {
+									if (
+										(
+											classifications[k].value >= minimumClassificationValue
+											|| matchingExpression === expression
+										)
+										&& classifications[k].label === meaning
+									) {
+										var text = 
+											stringUtils.join(
+												strings.slice(0, i)
+												.concat(classifications[k].label)
+												.concat(strings.slice(i + j + 1, strings.length))
+											);
+										return _self.classify(text);
+									}
 								}
 							}
 						}
