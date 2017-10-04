@@ -22,7 +22,7 @@ Si juan es mayor a otros, la repetición será verdadera. Sino, la repetición s
 
 --------
 
-Mi nombre es "Gabriel"
+Mi nombre es "Gabriel Rodriguez"
 
 --------
 

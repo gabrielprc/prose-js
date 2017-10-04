@@ -7,6 +7,7 @@ var BayesClassifier = require('bayes-classifier');
 var HmmTagger = require('salient/lib/salient/tagging/hmm_tagger');
 
 function StringUtils() {
+	var STRING_LITERAL_PATTERN = /(".*"|'.*')/g;
 	var tagger = new HmmTagger({
 		model: '../../../bin/es.hmm.json'
 	});
@@ -42,7 +43,9 @@ function StringUtils() {
 	this.split = function(string) {
 		var strings = tokenizer.tokenize(string);
 		for (var i = 0; i < strings.length; i++) {
-			strings[i] = strings[i].replace(/ +/, '');
+			if (!STRING_LITERAL_PATTERN.test(strings[i])) {
+				strings[i] = strings[i].replace(/ +/, '');	
+			}
 		}
 		return strings.filter(function(string){
 		  return string !== '';
