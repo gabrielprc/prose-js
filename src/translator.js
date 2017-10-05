@@ -77,7 +77,7 @@ function Translator() {
 		code: '$1'
 	};
 	var END_OF_STATEMENT_PATTERN = /(?:[^\\])(\s*[\.,;]+\s*)/i;
-	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))(por|para) +cada +(.+) +(en|de) +(.+)(?=(?:\s+|{|^))/i;
+	var FOR_EACH_PATTERN = /(?!(?:\s+|}|$))(por|para) +cada +(.+) +en +(.+)(?=(?:\s+|{|^))/i;
 	var LIST_PATTERN = /(?!(?:\s+|}|$))([\w ]+) +contiene +(?:a +)?([^\.\n]+)(?=\.|$)/i;
 	var WORD_REGEX = /^[A-Za-z\u00E0-\u00FC]+$/;
 
